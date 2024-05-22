@@ -8,9 +8,12 @@ from ..generatedata.utils.utils import read_dict_npy
 
 
 def add_item_to_dict(dict_name: Dict[str, Set[str]], key: str, item: str):
+<<<<<<< HEAD
     """
         将 item 添加到字典中对应 key 的 set 中
     """
+=======
+>>>>>>> 2fe29bdfbe3d9d607494de63d842bd48bbecce79
     dict_name[key].add(item)
 
 
@@ -36,6 +39,7 @@ def fdr(target, decoy):
 
 
 def sort_protein_in_group(protein_group: str):
+<<<<<<< HEAD
     """
         将蛋白质组中的蛋白质进行排序, 方便后面筛选
 
@@ -47,6 +51,8 @@ def sort_protein_in_group(protein_group: str):
     ---
     -   str: 排序之后的蛋白质组
     """
+=======
+>>>>>>> 2fe29bdfbe3d9d607494de63d842bd48bbecce79
     proteins = protein_group.split(';')
     proteins.sort()
     sorted_protein_group = ';'.join(proteins)
@@ -54,6 +60,7 @@ def sort_protein_in_group(protein_group: str):
 
 
 def generate_sepctronaut_peptideOrProteinGroups_file_set(df: pd.DataFrame, file_names: List[str], column: str):
+<<<<<<< HEAD
     """
         生成 spectronaut 肽段/蛋白质及其对应文件, 集合中的元素为 (peptide/protein, file_name)
 
@@ -67,6 +74,8 @@ def generate_sepctronaut_peptideOrProteinGroups_file_set(df: pd.DataFrame, file_
         ---
         -   set(): 元素为 (peptide/protein, file_name) 的集合
     """
+=======
+>>>>>>> 2fe29bdfbe3d9d607494de63d842bd48bbecce79
     peptideOrProteinGroups_file_set = set()
     # 前面的 column_name
     # ['PG.ProteinGroups', 'PG.ProteinAccessions', 'PG.Genes', 'PG.ProteinDescriptions', 'PEP.StrippedSequence', 'EG.PrecursorId']
@@ -81,6 +90,7 @@ def generate_sepctronaut_peptideOrProteinGroups_file_set(df: pd.DataFrame, file_
 
 
 def read_spectronaut(file_path: str, library_strippedsequence: Set[str], is_protein: bool = False):
+<<<<<<< HEAD
     """
         读取 spectronaut 的结果
 
@@ -92,6 +102,8 @@ def read_spectronaut(file_path: str, library_strippedsequence: Set[str], is_prot
         ---
         -   dict(str, set): key 为文件名, value 为结果的 set 
     """
+=======
+>>>>>>> 2fe29bdfbe3d9d607494de63d842bd48bbecce79
     df = pd.read_csv(file_path, sep='\t')
     file_names = list(df.columns[6:])
     column = "PEP.StrippedSequence"
@@ -107,6 +119,7 @@ def read_spectronaut(file_path: str, library_strippedsequence: Set[str], is_prot
 
 
 def generate_deeplearning_peptide_file_set(fdr_filter_target: npt.NDArray, modifiedPeptide_to_strippedPeptide_map: Dict[str, str]):
+<<<<<<< HEAD
     """
         生成 deeplearning 肽段及其对应文件, 集合中的元素为 (peptide, file_name)
 
@@ -119,6 +132,8 @@ def generate_deeplearning_peptide_file_set(fdr_filter_target: npt.NDArray, modif
         ---
         -   set(): 元素为 (peptide, file_name) 的集合
     """
+=======
+>>>>>>> 2fe29bdfbe3d9d607494de63d842bd48bbecce79
     peptide_file_set = set()
     for file_name, _, modified_peptide_charge in fdr_filter_target:
         stripped_peptide = modifiedPeptide_to_strippedPeptide_map[modified_peptide_charge[0]]
@@ -127,6 +142,7 @@ def generate_deeplearning_peptide_file_set(fdr_filter_target: npt.NDArray, modif
 
 
 def filter_data_by_threshold(d: Dict[str, Set[str]], threshold: int):
+<<<<<<< HEAD
     """
         删除某些数据差别过大的结果
 
@@ -138,6 +154,8 @@ def filter_data_by_threshold(d: Dict[str, Set[str]], threshold: int):
         --- 
         -   dict(): 删除过后的数据, key 数量减少或不变
     """
+=======
+>>>>>>> 2fe29bdfbe3d9d607494de63d842bd48bbecce79
     wipe_d: Dict[str, Set[str]] = {}
     for key, val in d.items():
         if len(val) < threshold:
@@ -147,6 +165,7 @@ def filter_data_by_threshold(d: Dict[str, Set[str]], threshold: int):
 
 
 def generate_file_valueSet_dict(peptideOrProteinGroups_file_set: Set):
+<<<<<<< HEAD
     """
         将之前生成 (peptide/Protein, file_name) 的 set 转化为 key 为 file_name, value 为 set 的字典
 
@@ -158,6 +177,8 @@ def generate_file_valueSet_dict(peptideOrProteinGroups_file_set: Set):
         ---
         -   dict(): key 为 file_name, value 为 set
     """
+=======
+>>>>>>> 2fe29bdfbe3d9d607494de63d842bd48bbecce79
     file_valueSet_dict: Dict[str, Set[str]] = {
         file_name: set() for _, file_name in peptideOrProteinGroups_file_set}
     for value, file_name in peptideOrProteinGroups_file_set:
@@ -166,6 +187,7 @@ def generate_file_valueSet_dict(peptideOrProteinGroups_file_set: Set):
 
 
 def generate_modifiedPeptide_to_strippedPeptide_map(library: pd.DataFrame):
+<<<<<<< HEAD
     """
         生成图谱库中的修饰肽段 -> 肽段序列的字典
 
@@ -181,6 +203,8 @@ def generate_modifiedPeptide_to_strippedPeptide_map(library: pd.DataFrame):
         ---
         -   dict(): key 为 ModifiedPeptide, value 为 StrippedPeptide  
     """
+=======
+>>>>>>> 2fe29bdfbe3d9d607494de63d842bd48bbecce79
     modifiedPeptide_to_strippedPeptide_map = {}
     for modified_peptide, stripped_peptide in library[['ModifiedPeptide', 'StrippedPeptide']].values:
         modifiedPeptide_to_strippedPeptide_map[modified_peptide] = stripped_peptide
@@ -188,6 +212,7 @@ def generate_modifiedPeptide_to_strippedPeptide_map(library: pd.DataFrame):
 
 
 def read_deeplearning(target, decoy, modifiedPeptide_to_strippedPeptide_map: Dict):
+<<<<<<< HEAD
     """
         读取 deeplearning 的结果
 
@@ -200,6 +225,8 @@ def read_deeplearning(target, decoy, modifiedPeptide_to_strippedPeptide_map: Dic
         Returns:
         -   dict(str, set): key 为文件名, value 为对应文件结果的 set
     """
+=======
+>>>>>>> 2fe29bdfbe3d9d607494de63d842bd48bbecce79
     threshold, fdr_target = fdr(target, decoy)
     peptide_file_set = generate_deeplearning_peptide_file_set(
         fdr_target, modifiedPeptide_to_strippedPeptide_map)
@@ -208,9 +235,12 @@ def read_deeplearning(target, decoy, modifiedPeptide_to_strippedPeptide_map: Dic
 
 
 def calculate_cup(d: Dict[str, Set[str]]):
+<<<<<<< HEAD
     """
         计算各重复样本结果的并集
     """
+=======
+>>>>>>> 2fe29bdfbe3d9d607494de63d842bd48bbecce79
     files = list(d.keys())
     initial_file = files[0]
     cup = d[initial_file].copy()
@@ -220,6 +250,7 @@ def calculate_cup(d: Dict[str, Set[str]]):
 
 
 def calculate_overlap(d: Dict[str, Set[str]], overlap_func: Callable[[Set[str], Set[str]], Set[str]]):
+<<<<<<< HEAD
     """
         计算各重复样本的 overlap
 
@@ -232,6 +263,8 @@ def calculate_overlap(d: Dict[str, Set[str]], overlap_func: Callable[[Set[str], 
         ---
         -   set: 所有重复样本的 overlap
     """
+=======
+>>>>>>> 2fe29bdfbe3d9d607494de63d842bd48bbecce79
     files = list(d.keys())
     initial_file = files[0]
     cap = d[initial_file].copy()
@@ -241,9 +274,12 @@ def calculate_overlap(d: Dict[str, Set[str]], overlap_func: Callable[[Set[str], 
 
 
 def calculate_dl_sn_overlap(dl: Dict[str, Set[str]], sn: Dict[str, Set[str]], overlap_func: Callable[[Set[str], Set[str]], Set[str]]):
+<<<<<<< HEAD
     """
         计算 dl, sn 两种方法在各重复样本下的 overlap
     """
+=======
+>>>>>>> 2fe29bdfbe3d9d607494de63d842bd48bbecce79
     overlap: Dict[str, Set[str]] = {}
     for file in dl.keys():
         overlap[file] = overlap_func(dl[file], sn[file])
@@ -251,9 +287,12 @@ def calculate_dl_sn_overlap(dl: Dict[str, Set[str]], sn: Dict[str, Set[str]], ov
 
 
 def calculate_average(d: Dict[str, Set[str]]):
+<<<<<<< HEAD
     """
         计算各重复样本下的鉴定数量的平均值
     """
+=======
+>>>>>>> 2fe29bdfbe3d9d607494de63d842bd48bbecce79
     d_num = {key: len(value) for key, value in d.items()}
     average = int(sum(d_num.values()) / len(d_num.keys()))
     return average
@@ -290,13 +329,17 @@ def get_save_rootpath(is_peptide: bool, is_cap=False):
 
 
 def peptide_overlap(to_be_overlap: Set[str], to_overlap: Set[str]):
+<<<<<<< HEAD
     """
         肽段用于计算 overlap 的函数
     """
+=======
+>>>>>>> 2fe29bdfbe3d9d607494de63d842bd48bbecce79
     return to_be_overlap & to_overlap
 
 
 def proteinGroups_overlap(to_be_overlap: Set[str], to_overlap: Set[str]):
+<<<<<<< HEAD
     """
         两个 group 中只要有一个蛋白质 map 上就算 overlap
 
@@ -309,6 +352,8 @@ def proteinGroups_overlap(to_be_overlap: Set[str], to_overlap: Set[str]):
         ---
         -   set: 元素为最后 overlap 的蛋白质组
     """
+=======
+>>>>>>> 2fe29bdfbe3d9d607494de63d842bd48bbecce79
     group_overlap = set()
     dl_proteins = set()
     # 把所有 deeplearning 的蛋白质筛选出来
@@ -323,6 +368,7 @@ def proteinGroups_overlap(to_be_overlap: Set[str], to_overlap: Set[str]):
 
 
 def calculate_peptide_overlap(dl: Dict[str, Set[str]], sn: Dict[str, Set[str]]):
+<<<<<<< HEAD
     """
         获得各重复样本的肽段 overlap
 
@@ -335,10 +381,13 @@ def calculate_peptide_overlap(dl: Dict[str, Set[str]], sn: Dict[str, Set[str]]):
         ---
         -   dict(str, set): key 为文件名, value 为该文件下两种方法鉴定肽段的 overlap
     """
+=======
+>>>>>>> 2fe29bdfbe3d9d607494de63d842bd48bbecce79
     return calculate_dl_sn_overlap(dl, sn, peptide_overlap)
 
 
 def calculate_proteinGroups_overlap(dl: Dict[str, Set], sn: Dict[str, Set]):
+<<<<<<< HEAD
     """
         获得各重复样本的蛋白质组 overlap
 
@@ -351,6 +400,8 @@ def calculate_proteinGroups_overlap(dl: Dict[str, Set], sn: Dict[str, Set]):
         ---
         -   dict(str, set): key 为文件名, value 为该文件下两种方法鉴定蛋白质组的 overlap
     """
+=======
+>>>>>>> 2fe29bdfbe3d9d607494de63d842bd48bbecce79
     groups_overlap = {}
     for file in dl.keys():
         groups_overlap[file] = proteinGroups_overlap(dl[file], sn[file])
@@ -358,6 +409,7 @@ def calculate_proteinGroups_overlap(dl: Dict[str, Set], sn: Dict[str, Set]):
 
 
 def print_metrics(methods_overlap: Dict[str, Set[str]], average: Dict[str, int], final_overlap: Set[str], overlap_average: int):
+<<<<<<< HEAD
     """
         输出肽段/蛋白质组的鉴定的统计相关的指标
 
@@ -365,6 +417,8 @@ def print_metrics(methods_overlap: Dict[str, Set[str]], average: Dict[str, int],
         2. 各重复样本的 overlap 平均值
         3. sn/dl 在所有重复样本的 overlap 
     """
+=======
+>>>>>>> 2fe29bdfbe3d9d607494de63d842bd48bbecce79
     print("\taverage: ",
           f"deeplearning: {average['dl']}", f"spectronaut: {average['sn']}")
     print("\tmethods_overlap: ", f"deeplearning: {methods_overlap['dl']}",
@@ -374,6 +428,7 @@ def print_metrics(methods_overlap: Dict[str, Set[str]], average: Dict[str, int],
 
 
 def generate_statics_metrics(dl: Dict[str, Set[str]], sn: Dict[str, Set[str]], overlap_func: Callable[[Set[str], Set[str]], Set[str]]):
+<<<<<<< HEAD
     """
         计算肽段/蛋白质组的相关指标
 
@@ -385,6 +440,8 @@ def generate_statics_metrics(dl: Dict[str, Set[str]], sn: Dict[str, Set[str]], o
         -   'final_overlap': methods_overlap 中两个方法的结果再取 overlap
         -   'overlap_average': 各重复样本的 overlap 的平均值
     """
+=======
+>>>>>>> 2fe29bdfbe3d9d607494de63d842bd48bbecce79
     # 两种方法各自计算所有样本的 overlap
     dl_overlap, sn_overlap = calculate_overlap(
         dl, overlap_func), calculate_overlap(sn, overlap_func)
@@ -410,9 +467,12 @@ def generate_statics_metrics(dl: Dict[str, Set[str]], sn: Dict[str, Set[str]], o
 
 
 def peptide_statics_metrics(dl: Dict[str, Set[str]], sn: Dict[str, Set[str]]):
+<<<<<<< HEAD
     """
         计算肽段相关的指标
     """
+=======
+>>>>>>> 2fe29bdfbe3d9d607494de63d842bd48bbecce79
     metrics = generate_statics_metrics(dl, sn, peptide_overlap)
     print("#" * 5, " peptide result ", "#" * 5)
     print_metrics(metrics['methods_overlap'], metrics['average'],
@@ -421,6 +481,7 @@ def peptide_statics_metrics(dl: Dict[str, Set[str]], sn: Dict[str, Set[str]]):
 
 
 def proteinGroups_statics_metrics(dl: Dict[str, Set[str]], sn: Dict[str, Set[str]]):
+<<<<<<< HEAD
     """
         计算蛋白质组相关的指标
 
@@ -432,6 +493,8 @@ def proteinGroups_statics_metrics(dl: Dict[str, Set[str]], sn: Dict[str, Set[str
         -   'final_overlap': methods_overlap 中两个方法的结果再取 overlap
         -   'overlap_average': overlap 的平均值
     """
+=======
+>>>>>>> 2fe29bdfbe3d9d607494de63d842bd48bbecce79
     metrics = generate_statics_metrics(dl, sn, proteinGroups_overlap)
     print("#" * 5, " protein_groups result ", "#" * 5)
     print_metrics(metrics['methods_overlap'], metrics['average'],
@@ -449,7 +512,11 @@ def split_score_by_files(dest, src, type: Literal['target', 'decoy']):
     for i, v in enumerate(src['info']):
         # v[0] 表示的是 file
         dest[v[0]][type]['score'].append(src['score'][i])
+<<<<<<< HEAD
         dest[v[0]][type]['info'].append((v[1][0], v[1][1]))
+=======
+        dest[v[0]][type]['info'].append((v[1][0], v[1][1], v[2]))
+>>>>>>> 2fe29bdfbe3d9d607494de63d842bd48bbecce79
 
 
 def get_dl_identify(target_path: str, decoy_path: str, modifiedPeptide_to_strippedPeptide_map: Dict[str, str]):
@@ -486,6 +553,7 @@ def get_dl_identify(target_path: str, decoy_path: str, modifiedPeptide_to_stripp
         for item in result:
             r[k].add(modifiedPeptide_to_strippedPeptide_map[item[2][0]])
     return r
+<<<<<<< HEAD
 
 def get_dl_identify_modified(t: npt.NDArray, d: npt.NDArray):
     predicted_info = {
@@ -517,3 +585,5 @@ def get_dl_identify_modified(t: npt.NDArray, d: npt.NDArray):
         for item in result:
             r[k].add(tuple(item))
     return r
+=======
+>>>>>>> 2fe29bdfbe3d9d607494de63d842bd48bbecce79

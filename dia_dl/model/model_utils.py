@@ -34,6 +34,7 @@ def is_replace(best_model_info, val_info, select_feature: Literal['loss', 'relat
 
 
 def classfier_train(
+<<<<<<< HEAD
     model: Module,
     device: torch.device,
     optim: Optimizer,
@@ -43,6 +44,17 @@ def classfier_train(
     configs: Dict[str, Any],
     train_params_info_save: Dict[str, Any],
     select_feature: Literal['loss', 'accuracy', 'f1_score']
+=======
+        model: Module,
+        device: torch.device,
+        optim: Optimizer,
+        loss_func: Module,
+        train_dataloader: DataLoader,
+        val_dataloader: DataLoader,
+        configs: Dict[str, Any],
+        train_params_info_save: Dict[str, Any],
+        select_feature: Literal['loss', 'accuracy', 'f1_score']
+>>>>>>> 2fe29bdfbe3d9d607494de63d842bd48bbecce79
 ):
     """
         模型训练通用函数
@@ -87,7 +99,11 @@ def classfier_train(
             'TP+FN': 0
         }
         # for batch in tqdm(train_dataloader, f'epoch: {epoch + 1}'):
+<<<<<<< HEAD
         for batch, _ in train_dataloader:
+=======
+        for batch in train_dataloader:
+>>>>>>> 2fe29bdfbe3d9d607494de63d842bd48bbecce79
             y = batch['label'].to(device)
             x = {
                 feature: batch[feature].to(device)
@@ -159,11 +175,19 @@ def classfier_train(
 
 
 def classfier_evaluate(
+<<<<<<< HEAD
     model: Module,
     device: torch.device,
     val_dataloader: DataLoader,
     configs: Dict[str, Any],
     loss_func: Module,
+=======
+        model: Module,
+        device: torch.device,
+        val_dataloader: DataLoader,
+        configs: Dict[str, Any],
+        loss_func: Module,
+>>>>>>> 2fe29bdfbe3d9d607494de63d842bd48bbecce79
 ):
     model.eval()
     info = {
@@ -175,7 +199,11 @@ def classfier_evaluate(
         'TP+FN': 0
     }
     # for batch in tqdm(val_dataloader, 'validation: '):
+<<<<<<< HEAD
     for batch, _ in val_dataloader:
+=======
+    for batch in val_dataloader:
+>>>>>>> 2fe29bdfbe3d9d607494de63d842bd48bbecce79
         y = batch['label'].to(device)
         x = {
             feature: batch[feature].to(device)
@@ -210,6 +238,7 @@ def classfier_evaluate(
 
 
 def classfier_test(
+<<<<<<< HEAD
     model: Module,
     device: torch.device,
     dataloader: DataLoader,
@@ -221,6 +250,19 @@ def classfier_test(
     with torch.no_grad():
         # for batch in tqdm(dataloader, 'test'):
         for batch, info in dataloader:
+=======
+        model: Module,
+        device: torch.device,
+        dataloader: DataLoader,
+        info: npt.NDArray,
+        configs: Dict[str, Any]
+):
+    model.eval()
+    score = []
+    with torch.no_grad():
+        # for batch in tqdm(dataloader, 'test'):
+        for batch in dataloader:
+>>>>>>> 2fe29bdfbe3d9d607494de63d842bd48bbecce79
             x = {
                 feature: batch[feature].to(device)
                 for feature in configs['features']['use']
@@ -229,11 +271,18 @@ def classfier_test(
             y_pred: torch.Tensor = model(**x)
             y_pred = torch.squeeze(y_pred, dim=1)
             score.append(y_pred.cpu().numpy())
+<<<<<<< HEAD
             infos.append(info)
 
     return {
         'score': np.concatenate(score, axis=0),
         'info': np.concatenate(infos, axis=0)
+=======
+
+    return {
+        'score': np.concatenate(score, axis=0),
+        'info': info
+>>>>>>> 2fe29bdfbe3d9d607494de63d842bd48bbecce79
     }
 
 
@@ -349,6 +398,11 @@ def regression_evaluate(
     val_dataloader: DataLoader,
     configs: Dict[str, Any],
     loss_func: Module,
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 2fe29bdfbe3d9d607494de63d842bd48bbecce79
 ):
     model.eval()
     info = {
@@ -402,8 +456,17 @@ def regression_test(
 
             y_pred: torch.Tensor = model(**x)
             y_pred = torch.squeeze(y_pred, dim=1)
+<<<<<<< HEAD
             quantity.append(y_pred.cpu().numpy())
             infos.append(info)
+=======
+            # print(y_pred)
+            # y_pred = torch.pow(2, y_pred)
+            # print(y_pred)
+            quantity.append(y_pred.cpu().numpy())
+            infos.append(info)
+            # time.sleep(0.2)
+>>>>>>> 2fe29bdfbe3d9d607494de63d842bd48bbecce79
 
     return {
         'quantity': np.concatenate(quantity, axis=0),
