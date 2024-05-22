@@ -1,0 +1,37 @@
+{
+    "batch_size": 4096,
+    "identification": {
+        "features": {
+            "read": [
+                "matchedMs2",
+                "Spectrum",
+                "Ms2IonMobility",
+                "IonMobility",
+                "label",
+                "info"
+            ],
+            "use": [
+                "matchedMs2",
+                "Spectrum",
+                "Ms2IonMobility",
+                "IonMobility"
+            ]
+        }
+    },
+    "quantification": {
+        "features": {
+            "read": [
+                "matchedMs2",
+                "Spectrum",
+                "Ms2IonMobility",
+                "IonMobility",
+                "label",
+                "info"
+            ],
+            "use": [
+                "matchedMs2",
+                "Spectrum"
+            ]
+        }
+    }
+}

@@ -1,0 +1,23 @@
+{
+    "is_ionMobility": true,
+    "is_featuredIons": true,
+    "label_path": "",
+    "tol": 15,
+    "peptidePeakNums": 6,
+    "filterMassSpectrumNums": 6,
+    "mobilityDistanceThreshold": 100,
+    "peptideMatchMs2PeakNums": 3,
+    "library": {
+        "target_path": "/data/xp/library/AD8-300S-directDIA_ModifiedPeptide_DDA_library_im_norm_peak6.npy",
+        "decoy_path": "/data/xp/library/AD8-300S-directDIA_ModifiedPeptide_DDA_library_im_decoy_params_100_norm_peak6.npy"
+    },
+    "save_root_path": "/data/xp/test_only_for_test",
+    "features": [
+        "matchedMs2",
+        "Spectrum",
+        "label",
+        "IonMobility",
+        "Ms2IonMobility",
+        "info"
+    ]
+}

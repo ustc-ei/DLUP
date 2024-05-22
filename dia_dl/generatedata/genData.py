@@ -79,6 +79,13 @@ def identify_decoy(
     return 1
 
 
+def calculate_peaks_sum(
+    filter_intensity: npt.NDArray
+):
+    peaks_sum = np.sum(filter_intensity, axis=1)
+    max_value, min_value = np.max(peaks_sum), np.min(peaks_sum)
+    return (peaks_sum - min_value) / (max_value - min_value)
+
 def calculate_ms2distance(
     filter_intensity: npt.NDArray,
     spectrum_intensity: npt.NDArray
@@ -160,7 +167,13 @@ def filter(
         spectrum_intensity=peptideMassSpectrumPeakIntensity,
     )
 
-    sortIndex = np.argsort(intensityDistanceSum)
+    filter_features = intensityDistanceSum
+
+    if configs['is_quant']:
+        peaks_sum = calculate_peaks_sum(peptideMatchedMassSpectrumsPeakIntensity)
+        filter_features = intensityDistanceSum - peaks_sum
+
+    sortIndex = np.argsort(filter_features)
     filterIndex = sortIndex[:configs['filterMassSpectrumNums']]
     filterIndex = np.sort(filterIndex)
     peptide_label_info['matchedMs2'] = peptide_label_info['matchedMs2'][filterIndex]
@@ -168,10 +181,9 @@ def filter(
         peptide_label_info['Ms2IonMobility'] = peptide_label_info['Ms2IonMobility'][filterIndex]
         peptide_label_info['Ms2IonMobility'] = np.array(
             peptide_label_info['Ms2IonMobility'], dtype=np.float32)
-        # print(peptide_label_info['Ms2IonMobility'])
+        
         peptide_label_info['Ms2IonMobility'] = ionMobilityPretreatment(
             peptide_label_info['Ms2IonMobility'], configs['peptidePeakNums'])
-        # print(peptide_label_info['Ms2IonMobility'])
 
         peptide_label_info['IonMobility'] = np.array(
             peptide_label_info['IonMobility'], dtype=np.float32)

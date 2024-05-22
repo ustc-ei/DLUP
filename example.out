@@ -1,0 +1,88 @@
+read ttp_20230702_CCS_Plasma_trypsin_Mix1_20min_system-test-4_Slot1-10_1_12904 data
+end
+divide library by windows!
+end!
+read ttp_20230702_CCS_Plasma_trypsin_Mix1_20min_system-test-3_Slot1-10_1_12903 data
+end
+divide library by windows!
+end!
+read ttp_20230702_CCS_Plasma_trypsin_Mix1_20min_system-test-1_Slot1-10_1_12901 data
+end
+divide library by windows!
+end!
+read ttp_20230702_CCS_Plasma_trypsin_Mix1_20min_system-test-5_Slot1-10_1_12905 data
+end
+divide library by windows!
+end!
+read ttp_20230702_CCS_Plasma_trypsin_Mix1_20min_system-test-2_Slot1-10_1_12902 data
+end
+divide library by windows!
+end!
+All processes are done.
+1.0 hour 32.0 minute 10.0696702003479 second
+Start!
+All processes are done.
+End!
+collection: 0.0 hour 0.0 minute 13.62313723564148 second
+read ttp_20230702_CCS_Plasma_trypsin_Mix1_20min_system-test-3_Slot1-10_1_12903 data
+end
+divide library by windows!
+end!
+create /data/xp/test_only_for_test/identification/test/decoy/ttp_20230702_CCS/ttp_20230702_CCS_Plasma_trypsin_Mix1_20min_system-test-3_Slot1-10_1_12903 success!
+read ttp_20230702_CCS_Plasma_trypsin_Mix1_20min_system-test-4_Slot1-10_1_12904 data
+end
+divide library by windows!
+end!
+create /data/xp/test_only_for_test/identification/test/decoy/ttp_20230702_CCS/ttp_20230702_CCS_Plasma_trypsin_Mix1_20min_system-test-4_Slot1-10_1_12904 success!
+read ttp_20230702_CCS_Plasma_trypsin_Mix1_20min_system-test-2_Slot1-10_1_12902 data
+end
+divide library by windows!
+end!
+create /data/xp/test_only_for_test/identification/test/decoy/ttp_20230702_CCS/ttp_20230702_CCS_Plasma_trypsin_Mix1_20min_system-test-2_Slot1-10_1_12902 success!
+read ttp_20230702_CCS_Plasma_trypsin_Mix1_20min_system-test-1_Slot1-10_1_12901 data
+end
+divide library by windows!
+end!
+create /data/xp/test_only_for_test/identification/test/decoy/ttp_20230702_CCS/ttp_20230702_CCS_Plasma_trypsin_Mix1_20min_system-test-1_Slot1-10_1_12901 success!
+read ttp_20230702_CCS_Plasma_trypsin_Mix1_20min_system-test-5_Slot1-10_1_12905 data
+end
+divide library by windows!
+end!
+create /data/xp/test_only_for_test/identification/test/decoy/ttp_20230702_CCS/ttp_20230702_CCS_Plasma_trypsin_Mix1_20min_system-test-5_Slot1-10_1_12905 success!
+All processes are done.
+1.0 hour 29.0 minute 46.136565923690796 second
+Start!
+All processes are done.
+End!
+collection: 0.0 hour 0.0 minute 1.842003345489502 second
+read ttp_20230702_CCS_Plasma_trypsin_Mix1_20min_system-test-2_Slot1-10_1_12902 data
+end
+divide library by windows!
+end!
+create /data/xp/test_only_for_test/quantification/test/ttp_20230702_CCS/ttp_20230702_CCS_Plasma_trypsin_Mix1_20min_system-test-2_Slot1-10_1_12902 success!
+read ttp_20230702_CCS_Plasma_trypsin_Mix1_20min_system-test-5_Slot1-10_1_12905 data
+end
+divide library by windows!
+end!
+create /data/xp/test_only_for_test/quantification/test/ttp_20230702_CCS/ttp_20230702_CCS_Plasma_trypsin_Mix1_20min_system-test-5_Slot1-10_1_12905 success!
+read ttp_20230702_CCS_Plasma_trypsin_Mix1_20min_system-test-4_Slot1-10_1_12904 data
+end
+divide library by windows!
+end!
+create /data/xp/test_only_for_test/quantification/test/ttp_20230702_CCS/ttp_20230702_CCS_Plasma_trypsin_Mix1_20min_system-test-4_Slot1-10_1_12904 success!
+read ttp_20230702_CCS_Plasma_trypsin_Mix1_20min_system-test-1_Slot1-10_1_12901 data
+end
+divide library by windows!
+end!
+create /data/xp/test_only_for_test/quantification/test/ttp_20230702_CCS/ttp_20230702_CCS_Plasma_trypsin_Mix1_20min_system-test-1_Slot1-10_1_12901 success!
+read ttp_20230702_CCS_Plasma_trypsin_Mix1_20min_system-test-3_Slot1-10_1_12903 data
+end
+divide library by windows!
+end!
+create /data/xp/test_only_for_test/quantification/test/ttp_20230702_CCS/ttp_20230702_CCS_Plasma_trypsin_Mix1_20min_system-test-3_Slot1-10_1_12903 success!
+All processes are done.
+1.0 hour 34.0 minute 21.01358127593994 second
+Start!
+All processes are done.
+End!
+collection: 0.0 hour 0.0 minute 14.54404330253601 second

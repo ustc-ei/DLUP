@@ -34,15 +34,15 @@ def is_replace(best_model_info, val_info, select_feature: Literal['loss', 'relat
 
 
 def classfier_train(
-        model: Module,
-        device: torch.device,
-        optim: Optimizer,
-        loss_func: Module,
-        train_dataloader: DataLoader,
-        val_dataloader: DataLoader,
-        configs: Dict[str, Any],
-        train_params_info_save: Dict[str, Any],
-        select_feature: Literal['loss', 'accuracy', 'f1_score']
+    model: Module,
+    device: torch.device,
+    optim: Optimizer,
+    loss_func: Module,
+    train_dataloader: DataLoader,
+    val_dataloader: DataLoader,
+    configs: Dict[str, Any],
+    train_params_info_save: Dict[str, Any],
+    select_feature: Literal['loss', 'accuracy', 'f1_score']
 ):
     """
         模型训练通用函数
@@ -87,7 +87,7 @@ def classfier_train(
             'TP+FN': 0
         }
         # for batch in tqdm(train_dataloader, f'epoch: {epoch + 1}'):
-        for batch in train_dataloader:
+        for batch, _ in train_dataloader:
             y = batch['label'].to(device)
             x = {
                 feature: batch[feature].to(device)
@@ -159,11 +159,11 @@ def classfier_train(
 
 
 def classfier_evaluate(
-        model: Module,
-        device: torch.device,
-        val_dataloader: DataLoader,
-        configs: Dict[str, Any],
-        loss_func: Module,
+    model: Module,
+    device: torch.device,
+    val_dataloader: DataLoader,
+    configs: Dict[str, Any],
+    loss_func: Module,
 ):
     model.eval()
     info = {
@@ -175,7 +175,7 @@ def classfier_evaluate(
         'TP+FN': 0
     }
     # for batch in tqdm(val_dataloader, 'validation: '):
-    for batch in val_dataloader:
+    for batch, _ in val_dataloader:
         y = batch['label'].to(device)
         x = {
             feature: batch[feature].to(device)
@@ -210,17 +210,17 @@ def classfier_evaluate(
 
 
 def classfier_test(
-        model: Module,
-        device: torch.device,
-        dataloader: DataLoader,
-        info: npt.NDArray,
-        configs: Dict[str, Any]
+    model: Module,
+    device: torch.device,
+    dataloader: DataLoader,
+    configs: Dict[str, Any]
 ):
     model.eval()
     score = []
+    infos = []
     with torch.no_grad():
         # for batch in tqdm(dataloader, 'test'):
-        for batch in dataloader:
+        for batch, info in dataloader:
             x = {
                 feature: batch[feature].to(device)
                 for feature in configs['features']['use']
@@ -229,10 +229,11 @@ def classfier_test(
             y_pred: torch.Tensor = model(**x)
             y_pred = torch.squeeze(y_pred, dim=1)
             score.append(y_pred.cpu().numpy())
+            infos.append(info)
 
     return {
         'score': np.concatenate(score, axis=0),
-        'info': info
+        'info': np.concatenate(infos, axis=0)
     }
 
 
@@ -348,8 +349,6 @@ def regression_evaluate(
     val_dataloader: DataLoader,
     configs: Dict[str, Any],
     loss_func: Module,
-
-
 ):
     model.eval()
     info = {
@@ -403,12 +402,8 @@ def regression_test(
 
             y_pred: torch.Tensor = model(**x)
             y_pred = torch.squeeze(y_pred, dim=1)
-            # print(y_pred)
-            # y_pred = torch.pow(2, y_pred)
-            # print(y_pred)
             quantity.append(y_pred.cpu().numpy())
             infos.append(info)
-            # time.sleep(0.2)
 
     return {
         'quantity': np.concatenate(quantity, axis=0),
