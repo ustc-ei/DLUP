@@ -1,12 +1,12 @@
 # DLUP
 
-a deep learning method for Plasma Proteome identification and quantification
+a deep learning method for **Human Plasma** Proteome identification and quantification
 
 ## Installation
 
 ### 1. Install Python (Anaconda)
 
-Download and install [Anaconda](https://www.anaconda.com)
+download and install [Anaconda](https://www.anaconda.com)
 
 then create an environment
 
@@ -51,7 +51,13 @@ ttp_20230702_CCS
 --- ttp_20230702_CCS_Plasma_trypsin_Mix1_20min_system-test-5_Slot1-10_1_12905.d
 ```
 
-### 2. Create the config files
+### 2. generate the library with '.npy' suffix
+
+first, you should create a folder to store the raw library (should with the `.tsv` suffix)
+
+Then run the library_generation.py to generate the target and the decoy library.
+
+### 3. Create the config files
 
 In the floder "configs", you can see the three json files.
 
@@ -77,7 +83,7 @@ you can only modify the `batch_size`
 run the `main.py`
 
 ```bash
-python main.py 'raw_data path' 'num_process'
+python main.py --data_path='raw_data path' num_process=5
 ```
 
-then you can gain a tsv file in the `save_root_path` folder.
+then you can gain the tsv file of the peptide and protein group quantification in the `save_root_path` folder.

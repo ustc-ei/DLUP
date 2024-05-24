@@ -7,8 +7,8 @@ import numpy as np
 import numpy.typing as npt
 from timspy.dia import TimsPyDIA
 
-import mergePeaks
-from multi_process import multi_process_mzml_tims
+from .mergePeaks import mergePeaks
+from preprocess.multi_process import multi_process_mzml_tims
 from dia_dl.generatedata.utils.utils import create_dir
 
 

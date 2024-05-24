@@ -1,7 +1,7 @@
 import os
 from concurrent.futures import ProcessPoolExecutor, wait
 from typing import Callable
-from mergePeaks import multiProcess
+from .mergePeaks import multiProcess
 
 
 def multi_process_mzml_tims(num_processes: int, root_path: str, extension_class: str, save_path: str, tol: int, func: Callable = multiProcess, *args):

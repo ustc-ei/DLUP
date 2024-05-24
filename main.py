@@ -7,7 +7,7 @@ import numpy as np
 import pandas as pd
 import numpy.typing as npt
 
-import read_tims_data
+import preprocess.read_tims_data as read_tims_data
 from process import peptide_quantification, protein_quantification
 
 from dia_dl.generatedata.utils.utils import read_json, create_dir, read_dict_npy
