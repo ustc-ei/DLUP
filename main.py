@@ -1,4 +1,5 @@
 import os
+import argparse
 from typing import Dict
 
 import torch
@@ -7,26 +8,30 @@ import pandas as pd
 import numpy.typing as npt
 
 import read_tims_data
-from process.peptide_quantification import quantification
+from process import peptide_quantification, protein_quantification
 
-from dia_dl.generatedata.utils.utils import read_json, save_json, create_dir
-from dia_dl.generatedata import genData 
+from dia_dl.generatedata.utils.utils import read_json, create_dir, read_dict_npy
+from dia_dl.generatedata import genData
 from dia_dl.generatedata.fullDataInMemory.genDataLoader import testDataLoader
-from dia_dl.model.model import identification_model, quantification_model 
+from dia_dl.model.model import identification_model, quantification_model
 from dia_dl.model.model_utils import classfier_test, regression_test
-from dia_dl.model.utils import generate_modifiedPeptide_to_strippedPeptide_map, get_dl_identify_modified
+from dia_dl.model.utils import get_dl_identify_modified
+
 
 def create_parent_dirs(root: str, data_name: str):
-    target_path = os.path.join(root, 'identification', 'test', 'target', data_name)
-    decoy_path = os.path.join(root, 'identification', 'test', 'decoy', data_name)
+    target_path = os.path.join(
+        root, 'identification', 'test', 'target', data_name)
+    decoy_path = os.path.join(root, 'identification',
+                              'test', 'decoy', data_name)
     quant_path = os.path.join(root, 'quantification', 'test', data_name)
     create_dir(target_path)
     create_dir(decoy_path)
     create_dir(quant_path)
     return target_path, decoy_path, quant_path
 
+
 def load_data(
-    root: str, 
+    root: str,
     data_name: str,
     identify_configs: Dict,
     quant_configs: Dict,
@@ -47,12 +52,14 @@ def load_data(
 
     quant = np.load(quant_path, allow_pickle=True).item()
 
-    target = testDataLoader(target, identify_configs['features']['read'], batch_size)
-    decoy = testDataLoader(decoy, identify_configs['features']['read'], batch_size)
-    quant = testDataLoader(quant, quant_configs['features']['read'], batch_size)
+    target = testDataLoader(
+        target, identify_configs['features']['read'], batch_size)
+    decoy = testDataLoader(
+        decoy, identify_configs['features']['read'], batch_size)
+    quant = testDataLoader(
+        quant, quant_configs['features']['read'], batch_size)
 
     return target, decoy, quant
-
 
 
 def model_test(root, data_name):
@@ -60,7 +67,7 @@ def model_test(root, data_name):
     identify_configs, quant_configs = model_configs['identification'], model_configs['quantification']
 
     target, decoy, quant = load_data(
-        root=root, 
+        root=root,
         data_name=data_name,
         identify_configs=identify_configs,
         quant_configs=quant_configs,
@@ -79,31 +86,33 @@ def model_test(root, data_name):
     quant_model.load_state_dict(quant_modelstate)
 
     targte_result = classfier_test(
-        identify_model, 
+        identify_model,
         device,
         target,
         identify_configs
     )
 
     decoy_result = classfier_test(
-        identify_model, 
+        identify_model,
         device,
         decoy,
         identify_configs
     )
 
     quant_result = regression_test(
-        quant_model, 
+        quant_model,
         device,
         quant,
         quant_configs
     )
     return targte_result, decoy_result, quant_result
 
+
 def process_result(
-    target_result: Dict[str, npt.NDArray], 
-    decoy_result: Dict[str, npt.NDArray], 
+    target_result: Dict[str, npt.NDArray],
+    decoy_result: Dict[str, npt.NDArray],
     quant_result: Dict[str, npt.NDArray],
+    target_library: Dict[str, Dict],
     root: str,
     data_name: str
 ):
@@ -118,16 +127,9 @@ def process_result(
         for f in files
     }
 
-    raw_library_path = '/data/xp/raw_library/AD8-300S-directDIA.tsv'
-    raw_library = pd.read_csv(raw_library_path, sep='\t', low_memory=False)
-
-    modified_to_stripped_map = generate_modifiedPeptide_to_strippedPeptide_map(
-        library=raw_library
-    )
-
     identify_result = get_dl_identify_modified(
-        t = target_result,
-        d = decoy_result
+        t=target_result,
+        d=decoy_result
     )
 
     for q, info in zip(quantity, info_sequence):
@@ -135,17 +137,18 @@ def process_result(
         if modified_charge in identify_result[file]:
             quant[file][modified_charge] = {
                 'quantity': q,
-                'strippedSequence': modified_to_stripped_map[modified_charge[0]]
+                'strippedSequence': target_library[modified_charge]['StrippedPeptide']
             }
-    
-    quantification(quant, os.path.join(root, f'{data_name}.tsv'))
-    
+
+    peptide_quantification.quantification(quant, os.path.join(
+        root, f'{data_name}_peptide_quantification.tsv'))
+    protein_quantification.quantification(quant, target_library, os.path.join(
+        root, f'{data_name}_protein_quantification.tsv'))
+
 
 def preprocess(root_path: str, num_processes: int = 20):
-    path_json_content = read_json('./configs/path_configs.json')
     # get the dir name
     data_name = root_path.split('/')[-1]
-    path_json_content['dir_names'].append(data_name)
     preprocess_configs = read_json('./configs/preprocess_configs.json')
     # extract the raw data and merge peaks
     read_tims_data.main(
@@ -153,9 +156,6 @@ def preprocess(root_path: str, num_processes: int = 20):
         num_processes=num_processes,
         tol=preprocess_configs['tol']
     )
-    if data_name not in path_json_content['dir_names']:
-        path_json_content['dir_names'].append(data_name)
-    save_json('./configs/path_configs.json', path_json_content)
     """
         preprocess the raw data
         identification
@@ -175,8 +175,8 @@ def preprocess(root_path: str, num_processes: int = 20):
 
     merge_path = os.path.join(root_path, 'merge')
     files = [os.path.join(merge_path, f)
-            for f in os.listdir(merge_path) if f.endswith('.npy')]
-    # identification 
+             for f in os.listdir(merge_path) if f.endswith('.npy')]
+    # identification
     preprocess_configs['is_test'] = True
     preprocess_configs['is_quant'] = False
     # just the root path
@@ -204,7 +204,8 @@ def preprocess(root_path: str, num_processes: int = 20):
                     --- data_name
                         --- (modifiedpeptide, charge).npy
     """
-    target_dir, decoy_dir, quant_dir = create_parent_dirs(save_root_path, data_name)
+    target_dir, decoy_dir, quant_dir = create_parent_dirs(
+        save_root_path, data_name)
     # target
     preprocess_configs['save_root_path'] = target_dir
     preprocess_configs['is_decoy'] = False
@@ -233,16 +234,33 @@ def preprocess(root_path: str, num_processes: int = 20):
         configs=preprocess_configs
     )
 
-    
 
 def main(root: str):
     data_name = root.split('/')[-1]
-    preprocess(root, 5) 
+    preprocess(root, 5)
     preprocess_configs = read_json('./configs/preprocess_configs.json')
     save_root_path = preprocess_configs['save_root_path']
     # model test
-    targte_result, decoy_result, quant_result = model_test(save_root_path, data_name)
-    process_result(targte_result, decoy_result, quant_result, save_root_path, data_name)
+    target_result, decoy_result, quant_result = model_test(
+        save_root_path, data_name)
+    # process identification and quantification result
+    target_library = read_dict_npy(
+        preprocess_configs['library']['target_path'])
+    process_result(target_result, decoy_result, quant_result,
+                   target_library, save_root_path, data_name)
+
 
 if __name__ == "__main__":
-    main('/data/xp/data/ttp_20230702_CCS')
+    parser = argparse.ArgumentParser(
+        description="Please input data folder path and num of mutil process")
+
+    # 定义字符串类型的可选参数
+    parser.add_argument('--data_path', type=str, help='data foler path')
+
+    # 定义整数类型的可选参数
+    parser.add_argument('--num_process', type=int,
+                        help='number of the process')
+
+    # 解析命令行参数
+    args = parser.parse_args()
+    main(args.data_path, argparse.num_process)

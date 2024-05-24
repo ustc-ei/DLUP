@@ -1,0 +1,10 @@
+bidict==0.23.1
+matplotlib==3.7.4
+numba==0.58.1
+numpy==1.22.4
+opentimspy==1.0.15
+pandas==2.0.3
+pymzml==2.5.2
+seaborn==0.13.2
+torch==1.13.0+cu117
+tqdm==4.66.1

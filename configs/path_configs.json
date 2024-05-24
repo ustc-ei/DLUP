@@ -1,9 +1,0 @@
-{
-    "root": "/data/xp",
-    "result": "result",
-    "train_test_data_folder": "test_only_for_test",
-    "label": "labels",
-    "dir_names": [
-        "ttp_20230702_CCS"
-    ]
-}
