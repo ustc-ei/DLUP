@@ -1,34 +1,35 @@
 # DLUP
-
-a deep learning method for **Human Plasma** Proteome identification and quantification
+A deep learning method for Human Plasma Proteome identification and quantification.
 
 ## Installation
 
 ### 1. Install Python (Anaconda)
+Download and install Anaconda.
 
-download and install [Anaconda](https://www.anaconda.com)
-
-then create an environment
-
-maybe you need the python 3.9+
+Create a new environment with Python 3.9+:
 
 ```bash
-conda create --n 'yourEnv' python=3.9
+conda create --name yourEnv python=3.9
 ```
 
-then activate the environment
+Activate the environment:
 
 ```bash
-conda activate 'yourEnv'
+conda activate yourEnv
 ```
 
-### 2. Install cuda
+### 2. Install CUDA (optional)
+If you have a GPU, you can install CUDA. If not, skip this step.
 
-if you don't have a gpu, you can skip this step.
+Visit the CUDA Toolkit Archive.
 
-click the url [[CUDA Toolkit Archive | NVIDIA Developer]](https://developer.nvidia.com/cuda-toolkit-archive), then select the architecture of your computer, finally choose the cuda11.7.0, then download the cuda
+Select your computer's architecture.
 
-### 3. Install packages
+Choose CUDA 11.7.0 and download the toolkit.
+
+### 3. Install Required Packages
+
+Install the necessary packages from the requirements.txt file:
 
 ```bash
 conda install --yes --file requirements.txt
@@ -36,54 +37,49 @@ conda install --yes --file requirements.txt
 
 ## Getting Started
 
-### 1. Prepare your raw data
+### 1. Prepare Your Raw Data
 
-you need to create a folder to store the raw data.
-
-below is an example 
+Create a folder to store your raw data. Here is an example of how your folder structure should look:
 
 ```
 ttp_20230702_CCS
---- ttp_20230702_CCS_Plasma_trypsin_Mix1_20min_system-test-1_Slot1-10_1_12901.d
---- ttp_20230702_CCS_Plasma_trypsin_Mix1_20min_system-test-2_Slot1-10_1_12902.d
---- ttp_20230702_CCS_Plasma_trypsin_Mix1_20min_system-test-3_Slot1-10_1_12903.d
---- ttp_20230702_CCS_Plasma_trypsin_Mix1_20min_system-test-4_Slot1-10_1_12904.d
---- ttp_20230702_CCS_Plasma_trypsin_Mix1_20min_system-test-5_Slot1-10_1_12905.d
+├── ttp_20230702_CCS_Plasma_trypsin_Mix1_20min_system-test-1_Slot1-10_1_12901.d
+├── ttp_20230702_CCS_Plasma_trypsin_Mix1_20min_system-test-2_Slot1-10_1_12902.d
+├── ttp_20230702_CCS_Plasma_trypsin_Mix1_20min_system-test-3_Slot1-10_1_12903.d
+├── ttp_20230702_CCS_Plasma_trypsin_Mix1_20min_system-test-4_Slot1-10_1_12904.d
+└── ttp_20230702_CCS_Plasma_trypsin_Mix1_20min_system-test-5_Slot1-10_1_12905.d
 ```
 
-### 2. generate the library with '.npy' suffix
+### 2. Generate the Library
 
-first, you should create a folder to store the raw library (should with the `.tsv` suffix)
+Create a folder to store the raw library files with the .tsv suffix.
 
-Then run the library_generation.py to generate the target and the decoy library.
+Run library_generation.py to generate the target and decoy libraries with the .npy suffix.
 
-### 3. Create the config files
+### 3. Create the Config Files
+In the configs folder, you will find two JSON files:
 
-In the floder "configs", you can see the three json files.
-
-```
--   preprocess_configs.json
--   model_configs.json
-```
+-   [x] preprocess_configs.json
+-   [x] model_configs.json
 
 #### preprocess_configs.json
 
-you can only modify the `library`, `save_root_path`, `mobilityDistanceThreshold`
+You can modify the following fields:
 
--   replace the `target_path` and `decoy_path` with your library path
--   `save_root_path` is the path to save the preprocess data, you should replace that with you own path
--   `mobilityDistanceThreshold` is the mobilityDistanceThreshold (only filter with the ms2 that are satisfied), you can modify it 0.05 or 0.1.
-  
+-   `library`: Replace target_path and decoy_path with your library paths.
+-   `save_root_path`: Set the path to save the preprocessed data.
+-   `mobilityDistanceThreshold`: Set to 0.05 or 0.1 to filter MS2 data.
+
 #### model_configs.json
 
-you can only modify the `batch_size`
+You can modify the batch_size field.
 
-### Identification and Quantification 
+### 4. Identification and Quantification
 
-run the `main.py`
+Run the main.py script:
 
 ```bash
-python main.py --data_path='raw_data path' num_process=5
+python main.py --data_path='raw_data_path' --num_process=5
 ```
 
-then you can gain the tsv file of the peptide and protein group quantification in the `save_root_path` folder.
+The results, including the peptide and protein group quantification in TSV format, will be saved in the save_root_path folder.
