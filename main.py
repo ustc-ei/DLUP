@@ -235,9 +235,9 @@ def preprocess(root_path: str, num_processes: int = 20):
     )
 
 
-def main(root: str):
+def main(root: str, num_process: int = 5):
     data_name = root.split('/')[-1]
-    preprocess(root, 5)
+    preprocess(root, num_process)
     preprocess_configs = read_json('./configs/preprocess_configs.json')
     save_root_path = preprocess_configs['save_root_path']
     # model test
